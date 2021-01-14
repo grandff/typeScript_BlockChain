@@ -8,3 +8,6 @@
 3) tsconfig.json 파일 생성 후 기본 설정
 4) index.ts 생성 후 기본 코딩 하고나서 터미널에서 tsc 실행하고 정상 생성 되는지 확인
 5) tsc 대신 다른 명령어 사용을 위해 package.json에서 scripts 추가
+
+6) yarn add tsc-watch --dev
+6-1) 설치가 완료되면 scripts prestart는 삭제, start를 "start": "tsc-watch --onSuccess \" node index.js\"" 로 변경
