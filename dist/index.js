@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const CryptoJS = require("crypto-js");
 class Block {
     constructor(index, hash, previousHash, data, timestamp) {
         this.index = index;
@@ -9,7 +10,11 @@ class Block {
         this.timestamp = timestamp;
     }
 }
+// class 선언을 안하고도 사용할 수 있도록 static 사용
+Block.calculateBlockHash = (index, previousHash, timestamp, data) => CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 const genesisBlock = new Block(0, "382398429842", "", "Hello", 123456);
 let blockchain = [genesisBlock];
-console.log(blockchain);
+const getBlockchain = () => blockchain;
+const getLatestBlock = () => blockchain[blockchain.length - 1];
+const getNewTimeStamp = () => Math.round(new Date().getTime() / 1000);
 //# sourceMappingURL=index.js.map
