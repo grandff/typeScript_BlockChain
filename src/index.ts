@@ -10,6 +10,8 @@ class Block{
     // class 선언을 안하고도 사용할 수 있도록 static 사용
     static calculateBlockHash = (index:number, previousHash:string, timestamp:number, data:string) : string => CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 
+    static validateStructure = (aBlock : Block) : boolean => typeof aBlock.index === "number" && typeof aBlock.hash === "string" && typeof aBlock.previousHash === "string" && typeof aBlock.timestamp === "number" && typeof aBlock.data === "string";
+
     constructor(
         index : number,
         hash : string,
@@ -35,12 +37,12 @@ const getNewTimeStamp = () : number => Math.round(new Date().getTime() / 1000);
 
 // create new block
 const createNewBlock = (data : string) : Block => {
-    const previosBlock : Block = getLatestBlock();
-    const newIndex : number = previosBlock.index + 1;
+    const previousBlock : Block = getLatestBlock();
+    const newIndex : number = previousBlock.index + 1;
     const newTimestamp : number = getNewTimeStamp();
-    const newHash : string = Block.calculateBlockHash(newIndex, previosBlock.hash, newTimestamp, data);
+    const newHash : string = Block.calculateBlockHash(newIndex, previousBlock.hash, newTimestamp, data);
 
-    const newBlock : Block = new Block(newIndex, newHash, previosBlock.hash, data, newTimestamp);
+    const newBlock : Block = new Block(newIndex, newHash, previousBlock.hash, data, newTimestamp);
 
     return newBlock;
 };
@@ -90,4 +92,14 @@ const sayHi = (person : Human):string => {            // setting return type is 
 console.log(sayHi(person))                    // return object
 console.log(sayHi(lynn));
 */
+
+// 구조 체크
+const isBlockValid = (candidateBlock : Block, previousBlock : Block) : boolean => {
+    if(!Block.validateStructure(candidateBlock)){
+        return false;
+    }else if(previousBlock.index + 1 !== candidateBlock.index){
+        return false;
+    }
+}
+
 export {};
