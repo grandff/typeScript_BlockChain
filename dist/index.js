@@ -71,6 +71,7 @@ const sayHi = (person : Human):string => {            // setting return type is 
 console.log(sayHi(person))                    // return object
 console.log(sayHi(lynn));
 */
+const getHashforBlock = (aBlock) => Block.calculateBlockHash(aBlock.index, aBlock.previousHash, aBlock.timestamp, aBlock.data);
 // 구조 체크
 const isBlockValid = (candidateBlock, previousBlock) => {
     if (!Block.validateStructure(candidateBlock)) {
@@ -78,6 +79,21 @@ const isBlockValid = (candidateBlock, previousBlock) => {
     }
     else if (previousBlock.index + 1 !== candidateBlock.index) {
         return false;
+    }
+    else if (previousBlock.hash !== candidateBlock.previousHash) {
+        return false;
+    }
+    else if (getHashforBlock(candidateBlock) !== candidateBlock.hash) {
+        return false;
+    }
+    else {
+        return true;
+    }
+};
+// add block
+const addBlock = (candidateBlock) => {
+    if (isBlockValid(candidateBlock, getLatestBlock())) {
+        blockchain.push(candidateBlock);
     }
 };
 //# sourceMappingURL=index.js.map
